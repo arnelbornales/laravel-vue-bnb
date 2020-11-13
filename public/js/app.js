@@ -81239,6 +81239,14 @@ __webpack_require__.r(__webpack_exports__);
           state = _ref2.state;
       commit('removeFromBasket', payload);
       localStorage.setItem('basket', JSON.stringify(state.basket));
+    },
+    clearBasket: function clearBasket(_ref3, payload) {
+      var commit = _ref3.commit,
+          state = _ref3.state;
+      commit("setBasket", {
+        items: []
+      });
+      localStorage.setItem('basket', JSON.stringify(state.basket));
     }
   },
   getters: {
