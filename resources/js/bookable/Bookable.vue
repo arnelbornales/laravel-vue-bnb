@@ -5,6 +5,7 @@
             <div class="card-body">
                 <div v-if="!loading">
                     <h2>{{ bookable.title }}</h2>
+                    <span class="align-right">${{ bookable.price }} / night</span>
                     <hr />
                     <article>{{ bookable.description }}</article>
                 </div>
