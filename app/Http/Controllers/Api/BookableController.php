@@ -21,4 +21,11 @@ class BookableController extends Controller
     {
         return new BookableShowResource(Bookable::findOrFail($id));
     }
+
+    public function search(Request $request) {
+        $search = htmlspecialchars($request->get('q'));
+        return BookableIndexResource::collection(
+            Bookable::where('title', 'like', '%'.$search.'%')->get()
+        );
+    }
 }

@@ -17,7 +17,7 @@ export default {
         id: Number
     },
     mounted() {
-        console.log(this.itemTitle);
+        // console.log('this.title = '+this.title);
         // this.itemTitle = "new Title";
         // setTimeout(() => {
         //     this.title = "new title";
