@@ -2479,6 +2479,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
 
 
 
@@ -2706,8 +2707,8 @@ __webpack_require__.r(__webpack_exports__);
     description: String,
     id: Number
   },
-  mounted: function mounted() {
-    console.log(this.itemTitle); // this.itemTitle = "new Title";
+  mounted: function mounted() {// console.log('this.title = '+this.title);
+    // this.itemTitle = "new Title";
     // setTimeout(() => {
     //     this.title = "new title";
     // }, 1000);
@@ -2751,6 +2752,38 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
@@ -2760,7 +2793,10 @@ __webpack_require__.r(__webpack_exports__);
     return {
       bookables: null,
       loading: false,
-      columns: 3
+      columns: 3,
+      search: null,
+      showsearch: false,
+      searches: []
     };
   },
   // beforeCreate() {
@@ -2768,19 +2804,41 @@ __webpack_require__.r(__webpack_exports__);
   // },
   computed: {
     rows: function rows() {
+      if (this.showsearch == true) {
+        return this.searches === null ? 0 : Math.ceil(this.searches.length / this.columns);
+      }
+
+      this.showsearch = false;
       return this.bookables === null ? 0 : Math.ceil(this.bookables.length / this.columns);
     }
   },
   methods: {
+    searchBookables: function searchBookables() {
+      var _this = this;
+
+      this.loading = true;
+      var request = axios.get("/api/search/bookables?q=" + this.search).then(function (response) {
+        _this.searches = response.data;
+      });
+      this.search = null;
+      this.showsearch = true;
+      this.loading = false;
+    },
     bookablesInRow: function bookablesInRow(row) {
       return this.bookables.slice((row - 1) * this.columns, row * this.columns);
     },
     placeholdersInRow: function placeholdersInRow(row) {
       return this.columns - this.bookablesInRow(row).length;
+    },
+    searchBookablesInRow: function searchBookablesInRow(row) {
+      return this.searches.slice((row - 1) * this.columns, row * this.columns);
+    },
+    searchPlaceholdersInRow: function searchPlaceholdersInRow(row) {
+      return this.columns - this.searchBookablesInRow(row).length;
     }
   },
   created: function created() {
-    var _this = this;
+    var _this2 = this;
 
     this.loading = true; // const p = new Promise((resolve,reject) => {
     //     console.log(resolve);
@@ -2792,10 +2850,13 @@ __webpack_require__.r(__webpack_exports__);
     // console.log(p);
 
     var request = axios.get("/api/bookables").then(function (response) {
-      return _this.bookables = response.data;
-    });
-    console.log(request);
+      return _this2.bookables = response.data;
+    }); //console.log(request);
+
     this.loading = false;
+    this.showsearch = false;
+    this.search = null;
+    this.searches = [];
   },
   // beforeMount() {
   //     console.log('before mount');
@@ -62749,6 +62810,10 @@ var render = function() {
               ? _c("div", [
                   _c("h2", [_vm._v(_vm._s(_vm.bookable.title))]),
                   _vm._v(" "),
+                  _c("span", { staticClass: "align-right" }, [
+                    _vm._v("$" + _vm._s(_vm.bookable.price) + " / night")
+                  ]),
+                  _vm._v(" "),
                   _c("hr"),
                   _vm._v(" "),
                   _c("article", [_vm._v(_vm._s(_vm.bookable.description))])
@@ -63023,42 +63088,148 @@ var render = function() {
   return _c("div", [
     _vm.loading
       ? _c("div", [_vm._v("\n        Data is loading ...\n    ")])
-      : _c(
-          "div",
-          _vm._l(_vm.rows, function(row) {
-            return _c(
+      : _c("div", [
+          _c("div", { staticClass: "row" }, [
+            _c(
               "div",
-              { key: "row" + row, staticClass: "row mb-4" },
+              {
+                staticClass: "col-12 d-flex justify-content-center text-center"
+              },
               [
-                _vm._l(_vm.bookablesInRow(row), function(bookable, column) {
+                _c("div", { staticClass: "input-group" }, [
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.search,
+                        expression: "search"
+                      }
+                    ],
+                    staticClass: "form-control",
+                    attrs: { type: "text" },
+                    domProps: { value: _vm.search },
+                    on: {
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.search = $event.target.value
+                      }
+                    }
+                  }),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "input-group-prepend" }, [
+                    _c(
+                      "button",
+                      {
+                        staticClass: "btn btn-primary",
+                        on: {
+                          click: function($event) {
+                            $event.preventDefault()
+                            return _vm.searchBookables()
+                          }
+                        }
+                      },
+                      [_c("i", { staticClass: "fa fa-search" })]
+                    )
+                  ])
+                ])
+              ]
+            )
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "col-md-12" }, [_vm._v(" ")]),
+          _vm._v(" "),
+          _vm.showsearch == true
+            ? _c("div", [
+                _c(
+                  "div",
+                  { staticClass: "row" },
+                  _vm._l(_vm.rows, function(row) {
+                    return _c(
+                      "div",
+                      { key: "row" + row, staticClass: "row mb-4" },
+                      [
+                        _vm._l(_vm.searchBookablesInRow(row), function(
+                          search,
+                          column
+                        ) {
+                          return _c(
+                            "div",
+                            {
+                              key: "search" + search + column,
+                              staticClass: "col d-flex align-items-stretch"
+                            },
+                            [
+                              _c(
+                                "bookable-list-item",
+                                _vm._b({}, "bookable-list-item", search, false)
+                              )
+                            ],
+                            1
+                          )
+                        }),
+                        _vm._v(" "),
+                        _vm._l(_vm.searchPlaceholdersInRow(row), function(
+                          placeholder
+                        ) {
+                          return _c("div", {
+                            key: "placeholder" + row + placeholder,
+                            staticClass: "col d-flex align-items-stretch"
+                          })
+                        })
+                      ],
+                      2
+                    )
+                  }),
+                  0
+                )
+              ])
+            : _vm._e(),
+          _vm._v(" "),
+          _vm.showsearch == false
+            ? _c(
+                "div",
+                _vm._l(_vm.rows, function(row) {
                   return _c(
                     "div",
-                    {
-                      key: "row" + row + column,
-                      staticClass: "col d-flex align-items-stretch"
-                    },
+                    { key: "row" + row, staticClass: "row mb-4" },
                     [
-                      _c(
-                        "bookable-list-item",
-                        _vm._b({}, "bookable-list-item", bookable, false)
-                      )
+                      _vm._l(_vm.bookablesInRow(row), function(
+                        bookable,
+                        column
+                      ) {
+                        return _c(
+                          "div",
+                          {
+                            key: "row" + row + column,
+                            staticClass: "col d-flex align-items-stretch"
+                          },
+                          [
+                            _c(
+                              "bookable-list-item",
+                              _vm._b({}, "bookable-list-item", bookable, false)
+                            )
+                          ],
+                          1
+                        )
+                      }),
+                      _vm._v(" "),
+                      _vm._l(_vm.placeholdersInRow(row), function(placeholder) {
+                        return _c("div", {
+                          key: "placeholder" + row + placeholder,
+                          staticClass: "col"
+                        })
+                      })
                     ],
-                    1
+                    2
                   )
                 }),
-                _vm._v(" "),
-                _vm._l(_vm.placeholdersInRow(row), function(placeholder) {
-                  return _c("div", {
-                    key: "placeholder" + row + placeholder,
-                    staticClass: "col"
-                  })
-                })
-              ],
-              2
-            )
-          }),
-          0
-        )
+                0
+              )
+            : _vm._e()
+        ])
   ])
 }
 var staticRenderFns = []
