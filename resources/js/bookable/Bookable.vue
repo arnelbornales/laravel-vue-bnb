@@ -4,8 +4,11 @@
         <div class="card">
             <div class="card-body">
                 <div v-if="!loading">
+                    <p class="align-center">
+                        <img :src="'/storage/images/' + bookable.image">
+                    </p>
                     <h2>{{ bookable.title }}</h2>
-                    <span class="align-right">${{ bookable.price }} / night</span>
+                    <span class="align-left">${{ bookable.price }} / night</span>
                     <hr />
                     <article>{{ bookable.description }}</article>
                 </div>
@@ -27,7 +30,7 @@
 
          <transition name="fade">
             <button
-                class="btn btn-outline-secondary btn-block"
+                class="btn btn-success btn-block"
                 v-if="price"
                 @click="addToBasket"
                  :disabled="inBasketAlready">
@@ -36,7 +39,7 @@
         </transition>
 
         <button
-            class="btn btn-outline-secondary btn-block"
+            class="btn btn-success btn-block"
             v-if="inBasketAlready"
             @click="removeFromBasket"
             >
@@ -83,7 +86,8 @@ export default {
         return {
             bookable: null,
             loading: false,
-            price: null
+            price: null,
+            image: null,
         };
     },
     created() {
@@ -143,5 +147,27 @@ export default {
 <style scoped>
     .warning {
         font-size: 0.7rem;
+    }
+    .align-center {
+        text-align: center;
+    }
+    .round {
+        border-radius: 2rem;
+    }
+    .round-left {
+        border-radius: 2rem 0 0 2rem;
+    }
+    .round-right {
+        border-radius: 0 2rem 2rem 0;
+    }
+    .card-body {
+        box-shadow: 0 0 5px #ccc !important;
+    }
+    .card-title {
+        color: #000 !important;
+        font-size: 2rem;
+    }
+    span.align-left {
+        font-size: 1.2rem;
     }
 </style>

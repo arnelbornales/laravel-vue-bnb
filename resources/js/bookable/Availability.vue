@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="check-availability">
         <h6 class="text-uppercase text-secondary font-weight-bolder">
             Check Availability
             <transition name="fade">
@@ -109,19 +109,23 @@ export default {
 </script>
 
 <style scoped>
-label {
-  font-size: 0.7rem;
-  text-transform: uppercase;
-  color: gray;
-  font-weight: bolder;
-}
-
-.is-invalid {
-  border-color: #b22222;
-  background-image: none;
-}
-
-.invalid-feedback {
-  color: #b22222;
-}
+    label {
+        font-size: 0.7rem;
+        text-transform: uppercase;
+        color: gray;
+        font-weight: bolder;
+    }
+    .is-invalid {
+        border-color: #b22222;
+        background-image: none;
+    }
+    .invalid-feedback {
+        color: #b22222;
+    }
+    .check-availability {
+        background: #eee;
+        border: 1px solid #ddd;
+        padding: 20px;
+        border-radius: 0.5rem;
+    }
 </style>
