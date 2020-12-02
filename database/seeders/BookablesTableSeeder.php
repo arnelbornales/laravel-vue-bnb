@@ -15,7 +15,7 @@ class BookablesTableSeeder extends Seeder
     public function run()
     {
         Bookable::factory()
-        ->times(50)
+        ->times(30)
         ->create();
     }
 }
