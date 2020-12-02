@@ -5,11 +5,11 @@
       </div>
       <div v-else>
         <div class="row">
-            <div class="col-12 d-flex justify-content-center text-center">
+            <div class="offset-4 col-4 d-flex justify-content-center text-center">
                 <div class="input-group">
-                    <input type="text" v-model="search" class="form-control">
+                    <input type="text" v-model="search" v-on:keyup.enter="searchBookables()" class="form-control round-left" placeholder="Search Bookables">
                     <div class="input-group-prepend">
-                        <button @click.prevent="searchBookables()" class="btn btn-primary">
+                        <button @click.prevent="searchBookables()" class="btn btn-primary round-right">
                             <i class="fa fa-search"></i>
                         </button>
                     </div>
@@ -86,6 +86,11 @@ export default {
     methods: {
         searchBookables() {
             this.loading = true;
+            console.log("this.search = "+ this.search);
+            if (this.search == null) {
+                return false;
+            }
+            this.loading = true;
             const request = axios
                 .get("/api/search/bookables?q="+this.search)
                 .then(response => {
@@ -142,3 +147,29 @@ export default {
     // }
 }
 </script>
+
+<style scoped>
+    .warning {
+        font-size: 0.7rem;
+    }
+    .align-center {
+        text-align: center;
+    }
+    .round {
+        border-radius: 2rem;
+    }
+    .round-left {
+        border-radius: 2rem 0 0 2rem;
+    }
+    .round-right {
+        border-radius: 0 2rem 2rem 0 !important;
+    }
+    .card-body {
+         box-shadow: 0 0 5px #ccc !important;
+    }
+    .card-title {
+        color: #000 !important;
+        font-size: 2rem;
+    }
+</style>
+

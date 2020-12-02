@@ -104,7 +104,7 @@
           <div class="col-md-12 form-group">
             <button
               type="submit"
-              class="btn btn-lg btn-primary btn-block"
+              class="btn btn-lg btn-success btn-block"
               @click.prevent="book"
               :disabled="loading"
             >Book now!</button>
@@ -117,10 +117,10 @@
         </div>
       </div>
 
-      <div class="col-md-4">
+      <div class="col-md-4 cart">
         <div class="d-flex justify-content-between">
           <h6 class="text-uppercase text-secondary font-weight-bolder">Your Cart</h6>
-          <h6 class="badge badge-secondary text-uppercase">
+          <h6 class="badge badge-success text-uppercase">
             <span v-if="itemsInBasket">Items {{ itemsInBasket }}</span>
             <span v-else>Empty</span>
           </h6>
@@ -216,11 +216,23 @@ export default {
 </script>
 
 <style scoped>
-h6.badge {
-  font-size: 100%;
-}
+    h6.badge {
+    font-size: 100%;
+    }
 
-a {
-  color: black;
-}
+    a {
+    color: black;
+    }
+    .badge-secondary {
+        color: #fff;
+        background: #38c172;
+        border: 1px solid #aaa;
+        font-size: 0.85rem;
+    }
+     .cart {
+        background: #eee;
+        border: 1px solid #ddd;
+        padding: 20px;
+        border-radius: 0.5rem;
+    }
 </style>
